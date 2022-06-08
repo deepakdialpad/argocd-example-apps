@@ -1,0 +1,6 @@
+apiVersion: v2
+name: smsgateway
+description: A Helm chart for sms-gateway. Packaged file of this chart along with some override values (which will come from FST) will be used as an artifact for spinnaker deployment.
+
+type: application
+version: 1.0.0

@@ -1,0 +1,4 @@
+machineType: SmsGateway
+app: SmsGateway
+fsmType: sms
+podType: FirespotterMachine
