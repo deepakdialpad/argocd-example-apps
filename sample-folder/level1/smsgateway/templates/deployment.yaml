@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.releaseName }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fst.commonLabels" . | nindent 4 -}}
+    app: {{ .Values.app }}
+    fsm_type: {{ .Values.fsmType }}
+    pod_type: {{ .Values.podType }}
+    fst_version: {{ .Values.fstVersion }}
+spec:
+  {{- include "fst.commonDeploymentStrategy" . | nindent 2 -}}
+  progressDeadlineSeconds: {{ .Values.progressDeadlineSeconds }}
+  replicas: {{ .Values.smsGateway.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.app }}
+      fsm_type: {{ .Values.fsmType }}
+      pod_type: {{ .Values.podType }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app }}
+        fsm_type: {{ .Values.fsmType }}
+        pod_type: {{ .Values.podType }}
+        fst_version: {{ .Values.fstVersion }}
+    spec:
+      imagePullSecrets:
+        - name: gcr-json-key
+      {{ include "fst.devHostAliases" . | nindent 6 }}
+      volumes:
+      {{ include "fst.commonVolumes" . | nindent 6 }}
+      {{ include "fst.localDevVolumes" . | nindent 6 }}
+      containers:
+      {{- include "fst.rackmanContainer" . | nindent 6 }}
+      {{- include "fst.vectorContainer" . | nindent 6 }}
+      - name: fst-smsgateway
+        image: {{ .Values.global.containerRegistry }}/fst-smsgateway:{{ .Values.fstVersion }}
+        resources:
+          limits:
+            memory: {{ .Values.smsGateway.limits.memory }}
+            cpu: {{ .Values.smsGateway.limits.cpu }}
+          requests:
+            memory: {{ .Values.smsGateway.requests.memory }}
+            cpu: {{ .Values.smsGateway.requests.cpu }}
+        env:
+          {{- include "fst.commonEnv" . | nindent 8 }}
+          {{- include "fst.smsGatewayEnv" . | nindent 8 }}
+        ports:
+        - containerPort: 4443
+        - containerPort: 4445
+        - containerPort: 25
+        - containerPort: 500
+          protocol: UDP
+        - containerPort: 4500
+          protocol: UDP
+        - containerPort: 26
+        volumeMounts:
+        {{- include "fst.commonMounts" . | nindent 8 }}
+        - mountPath: /var/log/sms_gateway
+          name: container-log-dir
+          subPathExpr: $(FST_POD_NAME)/sms_gateway
+      nodeSelector:
+        {{ if ne .Values.global.fstEnv "dev" -}}
+        {{- include "fst.nodeSelectors" . | nindent 8 }}
+        {{ end }}
