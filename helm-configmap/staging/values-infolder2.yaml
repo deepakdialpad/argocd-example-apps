@@ -1,2 +1,1 @@
-replicaCount: 5
-imageName: nginx:1.14.2
+replicaCount: 2
