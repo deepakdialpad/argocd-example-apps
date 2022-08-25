@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: sip-room-connector-agent
+  namespace: sip-room-connector
+  labels:
+    tags.datadoghq.com/service: sip-room-connector
+rules:
+  # "" indicates the core API group
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "watch", "patch"]

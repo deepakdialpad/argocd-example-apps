@@ -1,0 +1,64 @@
+# Runs an init script which applies mandatory node customizations that the SIP room connector workload depends on.
+#
+# The init script must complete on a given node before we can successfully run SIP room connector agents on it, although
+#  currently our deployment automation does nothing to guarantee this happens. To safely work around this, an admin
+#  must manually deploy the DaemonSet first, verify that the script completed successfully across the nodes in the
+#  pool, and only then proceed with the sip room connector workload deployment.
+#
+# For more details on this node initialization technique in general, refer to:
+#  https://cloud.google.com/solutions/automatically-bootstrapping-gke-nodes-with-daemonsets
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: sip-room-connector-node-initializer
+  namespace: default
+  labels:
+    app: sip-room-connector-node-init
+spec:
+  selector:
+    matchLabels:
+      app: sip-room-connector-node-init
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: sip-room-connector-node-init
+    spec:
+      nodeSelector:
+        cloud.dialpad.com/gke-nodepool: sip-room-connector
+      tolerations:
+      - effect: NoSchedule
+        key: cloud.dialpad.com/gke-nodepool
+        operator: Equal
+        value: sip-room-connector
+      volumes:
+      - name: root-mount
+        hostPath:
+          path: /
+      # Mount the ConfigMap containing the entrypoint script
+      - name: entrypoint
+        configMap:
+          name: sip-room-connector-node-init-entrypoint
+          defaultMode: 0744
+      initContainers:
+      # Privileged init container that runs the init script until it completes
+      - image: ubuntu:18.04
+        name: node-initializer
+        command: ["/scripts/entrypoint.sh"]
+        env:
+        - name: ROOT_MOUNT_DIR
+          value: /root
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: root-mount
+          mountPath: /root
+        - name: entrypoint
+          mountPath: /scripts
+      containers:
+      # Run a minimal 'pause' container, which runs indefinitely without exiting and consumes minimal resources.
+      # Otherwise, for each Pod, the entrypoint script would complete and the DaemonSet would reschedule the Pod
+      #  in a loop.
+      - image: "gcr.io/google-containers/pause:3.2"
+        name: pause

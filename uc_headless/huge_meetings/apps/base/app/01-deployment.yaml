@@ -1,0 +1,107 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: streaming-recorder-agent
+  labels:
+    app: streaming-recorder-agent
+spec:
+  replicas: 1
+  progressDeadlineSeconds: 600
+  revisionHistoryLimit: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 5
+      maxUnavailable: 5
+  selector:
+    matchLabels:
+      app: streaming-recorder-agent
+  template:
+    metadata:
+      labels:
+        app: streaming-recorder-agent
+    spec:
+      serviceAccountName: streaming-recorder-agent
+      volumes:
+      - name: recording-storage
+        emptyDir: {}
+      # Utilize the Pod graceful termination behavior to handle shutdown of agents with active recording sessions
+      # Value amounts to 5 hours (max UC conference time) + 10 min buffer
+      # 3 cases for when a Pod is deleted and SIGTERM is sent to its containers at the start of the grace period:
+      #  1) There's an active recording going on - all containers ignore the SIGTERM signals entirely
+      #  2) No active session - the session controller exits the Pub/Sub subscriber loop
+      #  In both 2) and 3), the Pod sends an API request to delete itself as soon as the session controller terminates
+      #  3) If something goes wrong such that the Pod does not delete itself before the grace period expires as in
+      #     1)/2), all containers will be force killed with SIGKILL
+      # This enables zero-downtime upgrades of the recorder agents
+      terminationGracePeriodSeconds: 21600
+      # use the dedicated node pool for recorder agents
+      nodeSelector:
+        cloud.dialpad.com/gke-nodepool: streaming-recorder-agent-pool
+      # Allow recorder to tolerate the taint given to the recorder-node-pool
+      tolerations:
+        - key: cloud.dialpad.com/gke-nodepool
+          effect: "NoSchedule"
+          operator: "Equal"
+          value: "streaming-recorder-agent-pool"
+      containers:
+      - name: session-controller
+        # use latest tag for development, but tag images with the output from 'git describe' for releases
+        image: gcr.io/ucstaging/streaming-recording-session-controller:latest
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: recording-storage
+          mountPath: /recording
+        ports:
+        - containerPort: 8080
+        env:
+          # env variables with k8s metadata
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          # secrets
+          - name: RECORDER_AGENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: recorder-agent-secret
+                key: secret
+          # datadog
+          - name: DD_AGENT_HOST
+            valueFrom:
+              fieldRef:
+                fieldPath: status.hostIP
+          # allows dd agent to detect the source of container metrics and automatically tag them accordingly
+          - name: DD_ENTITY_ID
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.uid
+        # env variables for the session-controller
+        envFrom:
+        - configMapRef:
+            name: streaming-recorder-config
+        resources:
+          requests:
+            memory: 150Mi
+
+      - name: browser-agent
+        # use latest tag for development, but tag images with the output from 'git describe' for releases
+        image: gcr.io/ucstaging/streaming-recording-browser-agent:latest
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: recording-storage
+          mountPath: /recording
+        envFrom:
+          - configMapRef:
+              name: streaming-recorder-config
+        ports:
+        - containerPort: 9000
+        - containerPort: 5000
+        resources:
+          requests:
+            memory: 600Mi
+            cpu: 10000m

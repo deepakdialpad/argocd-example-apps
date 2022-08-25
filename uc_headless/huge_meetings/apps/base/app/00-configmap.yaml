@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+# This configmap intended to store common property values between session-controller
+# and browser-agent containers.
+metadata:
+  name: streaming-recorder-config
+data:
+  RECORDER_AGENT_TYPE: "streaming-recording"
+  GCS_RECORDING_BUCKET_NAME: "ucstaging_streaming_recordings"
+  PUBSUB_SUBSCRIPTION_ID: "streaming-recorder-agent-subscription"
+  RECORDING_DIR: "/recording"
+  LOG_LEVEL: "INFO"
+  # browser window dimensions
+  WINDOW_SIZE_WIDTH: "1280"
+  WINDOW_SIZE_HEIGHT: "720"
+  # xvfb display
+  X_DISPLAY: ":3"
+  # xvfb display color depth
+  X_DISPLAY_DEPTH: "24"
+  CHROME_DEBUG_PORT: "9000"
+  DEVTOOLS_URL: "http://localhost"
+  # TODO: can be deprecated for RECORDER_AGENT_TYPE in the future
+  STREAMING_MODE: "True"

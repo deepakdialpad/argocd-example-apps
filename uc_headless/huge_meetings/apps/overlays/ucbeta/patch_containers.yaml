@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: streaming-recorder-agent
+spec:
+  template:
+    spec:
+      containers:
+      - image: gcr.io/uc-beta/streaming-recording-session-controller:DPM2022-06-29-3-g0ab54d3b00b
+        name: session-controller
+      - image: gcr.io/uc-beta/streaming-recording-browser-agent:DPM2022-06-29-3-g0ab54d3b00b
+        name: browser-agent

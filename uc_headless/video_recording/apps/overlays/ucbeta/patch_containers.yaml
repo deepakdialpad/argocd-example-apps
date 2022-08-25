@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recorder-agent
+spec:
+  template:
+    spec:
+      containers:
+      - image: gcr.io/uc-beta/recording-session-controller:DPM2022-08-24-0-g1a97855f493
+        name: session-controller
+      - image: gcr.io/uc-beta/recording-browser-agent:DPM2022-08-24-0-g1a97855f493
+        name: browser-agent

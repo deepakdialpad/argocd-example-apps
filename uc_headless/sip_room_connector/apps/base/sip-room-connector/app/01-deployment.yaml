@@ -1,0 +1,136 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: sip-room-connector
+    tags.datadoghq.com/service: sip-room-connector
+  name: sip-room-connector-agent
+  namespace: sip-room-connector
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      app: sip-room-connector
+  strategy:
+    rollingUpdate:
+      maxSurge: 5
+      maxUnavailable: 5
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: sip-room-connector
+        tags.datadoghq.com/service: sip-room-connector
+    spec:
+      serviceAccountName: sip-room-connector-agent
+      nodeSelector:
+        cloud.dialpad.com/gke-nodepool: sip-room-connector
+      tolerations:
+      - effect: NoSchedule
+        key: cloud.dialpad.com/gke-nodepool
+        operator: Equal
+        value: sip-room-connector
+      terminationGracePeriodSeconds: 21600
+      hostNetwork: true
+      volumes:
+      - name: modules
+        hostPath:
+          path: /dev
+      - name: sip-room-connector-config
+        emptyDir: {}
+      - name: sip-room-connector-agent-sa-key
+        secret:
+          secretName: sip-room-connector-agent-sa-key
+      initContainers:
+      - name: sip-room-connector-init-v4l2loopback
+        image: busybox:1.34.1
+        command: ['sh', '-c', 'if lsmod | grep v4l2loopback > /dev/null 2>&1; then echo "Kernel modules loaded successfully"; exit 0; else echo "Kernel modules not loaded successfully"; exit 1; fi;']
+      - name: sip-room-connector-init
+        image: gcr.io/ucstaging/sip-room-connector-init:latest
+        volumeMounts:
+        - name: sip-room-connector-config
+          mountPath: /etc/sip-room-connector
+        env:
+        - name: PUBLIC_NODE_IP_VAR_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: sip-room-connector-agent-config
+              key: PUBLIC_NODE_IP_VAR_NAME
+        - name: APP_ENV_CONFIG_FILE
+          valueFrom:
+            configMapKeyRef:
+              name: sip-room-connector-agent-config
+              key: APP_ENV_CONFIG_FILE
+        - name: GCE_METADATA_SERVER_EXTERNAL_IP_ENDPOINT
+          valueFrom:
+            configMapKeyRef:
+              name: sip-room-connector-agent-config
+              key: GCE_METADATA_SERVER_EXTERNAL_IP_ENDPOINT
+      containers:
+      - image: gcr.io/ucstaging/sip-room-agent:latest
+        imagePullPolicy: Always
+        securityContext:
+          privileged: true
+        name: sip-room-agent
+        ports:
+        - containerPort: 9000
+        volumeMounts:
+        - name: modules
+          mountPath: /dev
+        - name: sip-room-connector-config
+          mountPath: /etc/sip-room-connector
+        envFrom:
+        - configMapRef:
+            name: sip-room-connector-agent-config
+        resources:
+          requests:
+            cpu: 1800m
+            memory: 600Mi
+      - image: gcr.io/ucstaging/sip-room-session-controller:latest
+        imagePullPolicy: Always
+        name: session-controller
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: sip-room-connector-agent-sa-key
+          mountPath: /var/secrets/google
+        - name: sip-room-connector-config
+          mountPath: /etc/sip-room-connector
+        env:
+          # env variables with k8s metadata
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          # secrets
+          - name: SIP_ROOM_CONNECTOR_AGENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: sip-room-connector-agent-secret
+                key: secret
+          # GCP IAM service account key; this is necessary since GKE Workload Identity is not compatible with Pods that
+          # use host networking.
+          - name: GOOGLE_APPLICATION_CREDENTIALS
+            value: /var/secrets/google/sip-room-connector-agent-sa-key.json
+          # datadog
+          - name: DD_AGENT_HOST
+            valueFrom:
+              fieldRef:
+                fieldPath: status.hostIP
+          # allows dd agent to detect the source of container metrics and automatically tag them accordingly
+          - name: DD_ENTITY_ID
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.uid
+        envFrom:
+        - configMapRef:
+            name: sip-room-connector-agent-config
+        resources:
+          requests:
+            memory: 150Mi

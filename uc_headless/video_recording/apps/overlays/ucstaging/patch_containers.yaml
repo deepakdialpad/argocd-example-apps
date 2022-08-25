@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recorder-agent
+spec:
+  template:
+    spec:
+      containers:
+      - image: gcr.io/ucstaging/recording-session-controller:latest
+        name: session-controller
+      - image: gcr.io/ucstaging/recording-browser-agent:latest
+        name: browser-agent
+        

@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recorder-agent
+spec:
+  template:
+    spec:
+      containers:
+      - image: gcr.io/uberconf/recording-session-controller:DPM2022-08-10-8-gadafc2d46f6
+        name: session-controller
+      - image: gcr.io/uberconf/recording-browser-agent:DPM2022-08-10-8-gadafc2d46f6
+        name: browser-agent

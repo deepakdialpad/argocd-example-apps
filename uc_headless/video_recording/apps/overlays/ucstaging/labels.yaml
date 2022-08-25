@@ -1,0 +1,15 @@
+apiVersion: builtin
+kind: LabelTransformer
+metadata:
+  name: recorder-labels
+labels:
+  tags.datadoghq.com/env: "ucstaging"
+  tags.datadoghq.com/service: "video-recorder"
+  tags.datadoghq.com/version: "v0.00"
+fieldSpecs:
+- path: metadata/labels
+  create: true
+- path: spec/template/metadata/labels
+  create: true
+  kind: Deployment
+  

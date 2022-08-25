@@ -1,0 +1,4 @@
+asyncio==3.4.3
+Hypercorn==0.13.2
+Quart==0.17.0
+python-dotenv==0.19.2

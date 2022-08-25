@@ -1,0 +1,11 @@
+apiVersion: builtin
+kind: LabelTransformer
+metadata:
+  name: add-datadog-service-label
+labels:
+  tags.datadoghq.com/service: "sip-room-connector-node-init"
+fieldSpecs:
+- path: metadata/labels
+  create: true
+- path: spec/template/metadata/labels
+  create: false

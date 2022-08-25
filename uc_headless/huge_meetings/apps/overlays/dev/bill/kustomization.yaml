@@ -1,0 +1,24 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# transformers
+# add a prefix to Deployment/ConfigMap
+namePrefix: 'bill-'
+# add custom labels prefixed with bill
+commonLabels:
+  app: 'bill-streaming-recorder-agent'
+transformers:
+  # add other labels - we don't use commonLabels for all of them since commonLabels overrides the
+  # spec.selector.matchLabels field
+  - labels.yaml
+# use a personal tags for the images
+images:
+- name: gcr.io/ucstaging/streaming-recording-session-controller
+  newTag: bill
+- name: gcr.io/ucstaging/streaming-recording-browser-agent
+  newTag: bill
+
+patchesStrategicMerge:
+- patch_dev.yaml
+
+resources:
+  - ../../../base/app

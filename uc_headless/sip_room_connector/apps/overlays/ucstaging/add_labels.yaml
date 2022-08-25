@@ -1,0 +1,12 @@
+apiVersion: builtin
+kind: LabelTransformer
+metadata:
+  name: sip-room-connector-labels
+labels:
+  tags.datadoghq.com/env: "ucstaging"
+  tags.datadoghq.com/version: "v0.00"
+fieldSpecs:
+- path: metadata/labels
+  create: true
+- path: spec/template/metadata/labels
+  create: false

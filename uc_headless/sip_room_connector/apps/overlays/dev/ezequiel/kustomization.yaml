@@ -1,0 +1,25 @@
+# see README.md for more info.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# transformers
+# add a prefix to Deployment/ConfigMap
+namePrefix: 'ezequiel-'
+# add custom labels prefixed with ezequiel
+commonLabels:
+  app: 'ezequiel-sip-room-connector'
+transformers:
+  # add other labels - we don't use commonLabels for all of them since commonLabels overrides the
+  # spec.selector.matchLabels field
+  - add_labels.yaml
+# use a personal tags for the images
+images:
+- name: gcr.io/ucstaging/sip-room-session-controller
+  newTag: latest
+- name: gcr.io/ucstaging/sip-room-agent
+  newTag: latest
+
+patchesStrategicMerge:
+  - patch_dev.yaml
+
+resources:
+  - ../../../base/sip-room-connector/app

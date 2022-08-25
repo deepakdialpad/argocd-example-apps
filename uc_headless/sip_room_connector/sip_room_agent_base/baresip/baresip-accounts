@@ -1,0 +1,34 @@
+#
+# SIP accounts - one account per line
+#
+# Uncomment for testing
+Dialpad<sip:test@sip.hi5.vc>;regint=0;auth_pass=1234;answermode=auto;video_codecs=h264;audio_codecs=opus/48000/2,G7221/16000,G722/16000,PCMU/8000,PCMA/8000;mediaenc=srtp;highfive_token=secret;highfive_host=NODE_HOST;highfive_ip=NODE_IP
+#
+#  uri-params:
+#    ;transport={udp,tcp,tls}
+#
+#  addr-params:
+#    ;answermode={manual,early,auto}
+#    ;audio_codecs=speex/16000,pcma,...
+#    ;auth_user=username
+#    ;mediaenc={srtp,srtp-mand,srtp-mandf,dtls_srtp,zrtp}
+#    ;medianat={stun,turn,ice}
+#    ;outbound="sip:primary.example.com;transport=tcp"
+#    ;outbound2=sip:secondary.example.com
+#    ;ptime={10,20,30,40,...}
+#    ;regint=3600
+#    ;pubint=0 (publishing off)
+#    ;regq=0.5
+#    ;rtpkeep={zero,stun,dyna,rtcp}
+#    ;sipnat={outbound}
+#    ;stunuser=STUN/TURN/ICE-username
+#    ;stunpass=STUN/TURN/ICE-password
+#    ;stunserver=stun:[user:pass]@host[:port]
+#    ;video_codecs=h264
+#
+# Examples:
+#
+#  <sip:hemanth:face2face@192.168.143.60;transport=udp>
+#  <sip:user:secret@1.2.3.4;transport=tcp>
+#  <sip:user:secret@[2001:df8:0:16:216:6fff:fe91:614c]:5070;transport=tcp>
+#

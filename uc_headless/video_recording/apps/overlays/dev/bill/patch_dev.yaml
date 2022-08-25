@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recorder-agent
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+      - image: gcr.io/ucstaging/recording-session-controller:bill
+        name: session-controller
+      - image: gcr.io/ucstaging/recording-browser-agent:bill
+        name: browser-agent
+---
+apiVersion: v1
+data:
+  PUBSUB_SUBSCRIPTION_ID: recorder-agent-subscription-bill
+kind: ConfigMap
+metadata:
+  name: recorder-config
+

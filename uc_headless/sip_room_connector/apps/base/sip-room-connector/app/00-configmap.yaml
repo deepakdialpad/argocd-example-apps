@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sip-room-connector-agent-config
+  namespace: sip-room-connector
+  labels:
+    tags.datadoghq.com/service: "sip-room-connector"
+data:
+  RECORDER_AGENT_TYPE: "sip-room-connector"
+  PUBSUB_SUBSCRIPTION_ID: "sip-room-connector-subscription"
+  LOG_LEVEL: "INFO"
+  # browser window dimensions
+  WINDOW_SIZE_WIDTH: "1280"
+  WINDOW_SIZE_HEIGHT: "720"
+  CHROME_DEBUG_PORT: "9000"
+  DEVTOOLS_URL: "http://localhost"
+  DIALPAD_MEETINGS_APP_URL: "https://rostyslav-dot-ucstaging.appspot.com/"
+  IDLE_URL_PATH: "/siproomagentidle"
+  # config file directory
+  # use this for:
+  # - dynamic/runtime configs, e.g. the host Node's public IP
+  # - config files - some components require them
+  APP_CONFIG_PATH: "/etc/sip-room-connector"
+  # store dynamic/runtime configs as env vars here - containers can load this during startup
+  APP_ENV_CONFIG_FILE: "/etc/sip-room-connector/.env"
+  PUBLIC_NODE_IP_VAR_NAME: "PUBLIC_NODE_IP"
+  GCE_METADATA_SERVER_EXTERNAL_IP_ENDPOINT: "http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip"
+  MOSQUITTO_CONFIG_FILE: "/etc/mosquitto/mosquitto.conf"
+  BARESIP_CONFIG_DIR: "/root/.baresip"
+  # baresip/mosquitto-specific configs
+  VIDEODEV: "0"
+  CONTENTDEV: "1"
+  X_DISPLAY: ":3"
+  MQTTPORT: "1883"
+  MQTTWSPORT: "2883"
+  SIPPORT: "5060"
+  BFCPPORT: "20500"

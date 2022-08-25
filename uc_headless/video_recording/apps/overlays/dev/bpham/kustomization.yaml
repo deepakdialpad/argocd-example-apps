@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: recorder
+namePrefix: bpham-
+
+patchesStrategicMerge:
+- patch_dev.yaml
+
+resources:
+- configmap.yaml
+- deployment.yaml
+
+transformers:
+- labels.yaml

@@ -1,0 +1,14 @@
+apiVersion: builtin
+kind: LabelTransformer
+metadata:
+  name: recorder-labels
+labels:
+  tags.datadoghq.com/env: uberconf
+  tags.datadoghq.com/service: video-recorder
+  tags.datadoghq.com/version: DPM2022-08-10-8-gadafc2d46f6
+fieldSpecs:
+- path: metadata/labels
+  create: true
+- path: spec/template/metadata/labels
+  create: true
+  kind: Deployment

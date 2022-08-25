@@ -1,0 +1,27 @@
+# Defines a Node initialization procedure. This ConfigMap is to be mounted to a sufficiently-privileged container
+#  that runs the script.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sip-room-connector-node-init-entrypoint
+  namespace: default
+  labels:
+    app: sip-room-connector-node-init
+data:
+  # Entrypoint script that applies required node-level changes that the SIP room connector workload depends on.
+  # In particular, this loads the v4l2loopback kernel module.
+  entrypoint.sh: |
+    #!/usr/bin/env bash
+
+    set -euo pipefail
+
+    DEBIAN_FRONTEND=noninteractive
+    ROOT_MOUNT_DIR="${ROOT_MOUNT_DIR:-/root}"
+
+    # Use chroot to run the following commands directly in the host root (mounted as the /root volume in the container)
+    chroot "${ROOT_MOUNT_DIR}" apt update -y
+    chroot "${ROOT_MOUNT_DIR}" apt install -y v4l2loopback-dkms
+    chroot "${ROOT_MOUNT_DIR}" apt install -y linux-modules-extra-$(uname -r) dkms
+
+    echo "Loading kernel modules"
+    chroot "${ROOT_MOUNT_DIR}" modprobe v4l2loopback devices=2 card_label=main,slides exclusive_caps=1,1

@@ -1,0 +1,16 @@
+apiVersion: rbac.authorization.k8s.io/v1
+# Binds recorder-agent Role to the streaming-recorder-agent ServiceAccount (i.e. confers permissions defined by the
+#  streaming-recorder-agent role to the recorder ServiceAccount)
+kind: RoleBinding
+metadata:
+  name: streaming-recorder-agent-role-binding
+  namespace: recorder
+subjects:
+- kind: ServiceAccount
+  name: streaming-recorder-agent
+  # "" indicates the core API group
+  apiGroup: ""
+roleRef:
+  kind: Role
+  name: streaming-recorder-agent
+  apiGroup: rbac.authorization.k8s.io

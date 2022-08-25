@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sip-room-connector-agent
+  namespace: sip-room-connector
+spec:
+  template:
+    spec:
+      initContainers:
+      - image: gcr.io/uberconf/sip-room-connector-init:DPM2022-08-10-8-gadafc2d46f6
+        name: sip-room-connector-init
+      containers:
+      - image: gcr.io/uberconf/sip-room-session-controller:DPM2022-08-10-8-gadafc2d46f6
+        name: session-controller
+      - image: gcr.io/uberconf/sip-room-agent:DPM2022-08-10-8-gadafc2d46f6
+        name: sip-room-agent

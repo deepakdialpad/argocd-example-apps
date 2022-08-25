@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+data:
+  GCS_RECORDING_BUCKET_NAME: uberconf_recordings
+kind: ConfigMap
+metadata:
+  name: recorder-config

@@ -1,0 +1,6 @@
+# emacs temp/autosave files
+**/*~
+**/\#*\#
+
+# secret files
+**/*.secret.*

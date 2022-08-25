@@ -1,0 +1,25 @@
+#!/bin/bash
+
+chmod +x generate_mqtt_ws_certs.sh
+./generate_mqtt_ws_certs.sh
+
+# load dynamic/runtime configs
+source $APP_ENV_CONFIG_FILE
+
+sudo sed -i "s;1883;$MQTTPORT;g" $MOSQUITTO_CONFIG_FILE
+sudo sed -i "s;2883;$MQTTWSPORT;g" $MOSQUITTO_CONFIG_FILE
+
+sed -i "s;VIDEODEV;/dev/video$VIDEODEV;g" $BARESIP_CONFIG_DIR/config
+sed -i "s;CONTENTDEV;/dev/video$CONTENTDEV;g" $BARESIP_CONFIG_DIR/config
+sed -i "s;DISPLAY;$X_DISPLAY;g" $BARESIP_CONFIG_DIR/config
+sed -i "s;MQTTPORT;$MQTTPORT;g" $BARESIP_CONFIG_DIR/config
+sed -i "s;SIPPORT;$SIPPORT;g" $BARESIP_CONFIG_DIR/config
+sed -i "s;BFCPPORT;$BFCPPORT;g" $BARESIP_CONFIG_DIR/config
+
+if [ "$DEV_ACCOUNTS" == "true" ]; then
+  mv $BARESIP_CONFIG_DIR/dev-accounts $BARESIP_CONFIG_DIR/accounts
+  sed -i "s;NODE_IP;$PUBLIC_NODE_IP;g" $BARESIP_CONFIG_DIR/accounts
+  sed -i "s;NODE_HOST;$PUBLIC_NODE_IP;g" $BARESIP_CONFIG_DIR/accounts
+fi
+
+exec python3 browser_agent.py

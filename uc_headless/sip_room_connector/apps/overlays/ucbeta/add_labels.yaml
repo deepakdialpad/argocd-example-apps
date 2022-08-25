@@ -1,0 +1,14 @@
+apiVersion: builtin
+kind: LabelTransformer
+metadata:
+  name: sip-room-connector-labels
+labels:
+  tags.datadoghq.com/env: uc-beta
+  tags.datadoghq.com/service: sip-room-connector
+  tags.datadoghq.com/version: DPM2022-08-24-0-g1a97855f493
+fieldSpecs:
+- path: metadata/labels
+  create: true
+- path: spec/template/metadata/labels
+  create: true
+  kind: Deployment

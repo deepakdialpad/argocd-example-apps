@@ -1,0 +1,13 @@
+asyncio==3.4.3
+pyppeteer==0.2.2
+google-api-python-client==2.41.0
+google-cloud-pubsub==2.11.0
+google-cloud-storage==2.2.1
+Hypercorn==0.13.2
+Quart==0.17.0
+httpx==0.22.0
+kubernetes==12.0.1
+urllib3==1.26.9
+datadog==0.39.0
+asyncinotify==2.0.2
+python-dotenv==0.19.2

@@ -1,0 +1,17 @@
+apiVersion: rbac.authorization.k8s.io/v1
+# Binds recorder-agent Role to the recorder-agent ServiceAccount (i.e. confers permissions defined by the recorder-agent
+#  role to the recorder ServiceAccount)
+kind: RoleBinding
+metadata:
+  name: recorder-agent-role-binding
+  namespace: recorder
+subjects:
+- kind: ServiceAccount
+  name: recorder-agent
+  # "" indicates the core API group
+  apiGroup: ""
+roleRef:
+  kind: Role
+  name: recorder-agent
+  apiGroup: rbac.authorization.k8s.io
+  

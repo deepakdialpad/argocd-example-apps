@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recorder-agent
+spec:
+  template:
+    spec:
+      containers:
+      - image: gcr.io/ucstaging/recording-session-controller:UC2021-03-17-62-g71468de49e6
+        name: session-controller
+      - image: gcr.io/ucstaging/recording-browser-agent:UC2021-03-17-62-g71468de49e6
+        name: browser-agent
+---
+apiVersion: v1
+data:
+  PUBSUB_SUBSCRIPTION_ID: recorder-agent-subscription-bpham
+kind: ConfigMap
+metadata:
+  name: recorder-config
+

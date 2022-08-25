@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# transformers
+commonLabels:
+  app: sip-room-connector-node-init
+transformers:
+  - add-datadog-service-label.yaml
+
+resources:
+  - 00-node-init-entrypoint-configmap.yaml
+  - 01-node-init-daemonset.yaml

@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: streaming-recorder-agent
+spec:
+  template:
+    spec:
+      containers:
+      - image: gcr.io/uberconf/streaming-recording-session-controller:latest
+        name: session-controller
+      - image: gcr.io/uberconf/streaming-recording-browser-agent:latest
+        name: browser-agent

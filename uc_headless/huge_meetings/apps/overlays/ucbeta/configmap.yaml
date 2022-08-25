@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+data:
+  GCS_RECORDING_BUCKET_NAME: uc-beta_streaming_recordings
+kind: ConfigMap
+metadata:
+  name: streaming-recorder-config

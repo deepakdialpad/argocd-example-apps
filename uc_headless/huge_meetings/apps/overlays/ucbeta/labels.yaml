@@ -1,0 +1,14 @@
+apiVersion: builtin
+kind: LabelTransformer
+metadata:
+  name: streaming-recorder-labels
+labels:
+  tags.datadoghq.com/env: uc-beta
+  tags.datadoghq.com/service: streaming-recorder
+  tags.datadoghq.com/version: DPM2022-06-29-3-g0ab54d3b00b
+fieldSpecs:
+- path: metadata/labels
+  create: true
+- path: spec/template/metadata/labels
+  create: true
+  kind: Deployment

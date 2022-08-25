@@ -1,0 +1,14 @@
+apiVersion: builtin
+kind: LabelTransformer
+metadata:
+  name: streaming-recorder-labels
+labels:
+  tags.datadoghq.com/env: "bpham-dev"
+  tags.datadoghq.com/service: "bpham-streaming-recorder"
+  tags.datadoghq.com/version: "bpham-v0.00"
+fieldSpecs:
+- path: metadata/labels
+  create: false
+- path: spec/template/metadata/labels
+  create: false
+  kind: Deployment

@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sip-room-connector-agent
+  namespace: sip-room-connector
+spec:
+  template:
+    spec:
+      containers:
+      - image: gcr.io/ucstaging/sip-room-session-controller:latest
+        name: session-controller
+      - image: gcr.io/ucstaging/sip-room-agent:latest
+        name: sip-room-agent
+      initContainers:
+      - name: sip-room-connector-init
+        image: gcr.io/ucstaging/sip-room-connector-init:latest

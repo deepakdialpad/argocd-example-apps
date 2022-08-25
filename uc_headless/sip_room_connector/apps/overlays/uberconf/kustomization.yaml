@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# transformers
+transformers:
+  - add_labels.yaml
+
+patchesStrategicMerge:
+  - patch_containers.yaml
+  - patch_replicas.yaml
+  - patch_serviceaccount.yaml
+  - patch_configmap.yaml
+
+resources:
+  - ../../base
+  - sip-room-connector-agent-sealedsecret.uberconf.yaml
+  - sip-room-connector-agent-sa-key-sealedsecret.uberconf.yaml

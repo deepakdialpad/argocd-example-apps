@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+data:
+   DIALPAD_MEETINGS_APP_URL: "https://ucstaging.appspot.com"
+kind: ConfigMap
+metadata:
+  name: sip-room-connector-agent-config
+  namespace: sip-room-connector

@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: sip-room-connector
+
+# transformers
+commonLabels:
+  app: sip-room-connector
+
+# common resources needed to support SIP room connector agent deployments
+resources:
+  - 00-namespace.yaml
+  - 01-serviceaccount.yaml
+  - 02-role.yaml
+  - 03-rolebinding.yaml
