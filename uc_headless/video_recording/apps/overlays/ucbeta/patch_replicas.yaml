@@ -3,5 +3,5 @@ kind: Deployment
 metadata:
   name: recorder-agent
 spec:
-  replicas: 10
+  replicas: 1
   
