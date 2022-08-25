@@ -36,8 +36,6 @@ spec:
       # This enables zero-downtime upgrades of the recorder agents
       terminationGracePeriodSeconds: 21600
       # use the dedicated node pool for recorder agents
-      nodeSelector:
-        cloud.dialpad.com/gke-nodepool: recorder-agent-pool
       # Allow recorder to tolerate the taint given to the recorder-node-pool
       tolerations:
         - key: cloud.dialpad.com/gke-nodepool
