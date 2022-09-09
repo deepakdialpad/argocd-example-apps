@@ -19,4 +19,6 @@ spec:
         image: {{ .Values.imageName }}
         ports:
         - containerPort: {{ .Values.containerPort }}
+      tolerations:
+      - operator: "Exists"
 
