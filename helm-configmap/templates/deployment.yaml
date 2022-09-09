@@ -19,5 +19,5 @@ spec:
       - name: ngnix
         image: {{ .Values.imageName }}
         ports:
-        - containerPort: 80
+        - containerPort: {{ .Values.containerPort }}
 
