@@ -1,4 +1,4 @@
 replicaCount: 1
 imageName: nginx:1.14.2
 releaseName: sample-app-outside1
-containerPort: 101
+containerPort: 80
