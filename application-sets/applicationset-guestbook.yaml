@@ -8,10 +8,6 @@ spec:
       elements:
       - cluster: engineering-dev
         url: https://rs-dal-km1-staging.ubervoip.net:6443
-      - cluster: engineering-prod
-        url: https://rs-dal-km1-staging.ubervoip.net:6443
-      - cluster: finance-preprod
-        url: https://rs-dal-km1-staging.ubervoip.net:6443
   template:
     metadata:
       name: '{{cluster}}-guestbook'
@@ -23,4 +19,4 @@ spec:
         path: application-sets/{{cluster}}
       destination:
         server: '{{url}}'
-        namespace: guestbook
+        namespace: default
