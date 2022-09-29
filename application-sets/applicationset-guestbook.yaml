@@ -7,11 +7,11 @@ spec:
   - list:
       elements:
       - cluster: engineering-dev
-        url: https://1.2.3.4
+        url: https://rs-dal-km1-staging.ubervoip.net:6443
       - cluster: engineering-prod
-        url: https://2.4.6.8
+        url: https://rs-dal-km1-staging.ubervoip.net:6443
       - cluster: finance-preprod
-        url: https://9.8.7.6
+        url: https://rs-dal-km1-staging.ubervoip.net:6443
   template:
     metadata:
       name: '{{cluster}}-guestbook'
