@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: guestbook-1
+spec:
+  generators:
+  - list:
+      elements:
+      - cluster: engineering-dev-1
+        url: https://rs-dal-km1-staging.ubervoip.net:6443
+  template:
+    metadata:
+      name: '{{cluster}}-guestbook-1'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/deepakdialpad/argocd-example-apps.git
+        targetRevision: argocd-example-1
+        path: 'test-application-sets/{{cluster}}'
+      destination:
+        server: '{{url}}'
+        namespace: default
