@@ -15,7 +15,7 @@ spec:
       project: default
       source:
         repoURL: https://github.com/deepakdialpad/argocd-example-apps.git
-        targetRevision: argocd-example-3
+        targetRevision: argocd-example-1
         path: 'test-application-sets/{{cluster}}'
       destination:
         server: '{{url}}'
