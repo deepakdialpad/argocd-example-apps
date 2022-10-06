@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+data:
+   DIALPAD_MEETINGS_APP_URL: "https://meetings.dialpadbeta.com"
+kind: ConfigMap
+metadata:
+  name: guestbook-ui
