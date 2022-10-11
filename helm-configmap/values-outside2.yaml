@@ -2,3 +2,4 @@ replicaCount: 1
 imageName: nginx:1.14.2
 releaseName: sample-app-outside2
 containerPort: 100
+dynamic_value: dynamic-value-2
