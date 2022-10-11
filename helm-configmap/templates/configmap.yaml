@@ -7,4 +7,5 @@ data:
   player_initial_lives: "3"
   ui_properties_file_name: "user-interface.properties"
   dynamic_value: {{ .Values.dynamic_value }}
+  static_data: "2334"
 
