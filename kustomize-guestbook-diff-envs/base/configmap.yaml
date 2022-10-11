@@ -5,4 +5,4 @@ metadata:
 data:
   player_initial_lives: "3"
   ui_properties_file_name: "user-interface.properties"
-  BASE_config_value: "hello"
+  BASE_config_value_new: "hello"
