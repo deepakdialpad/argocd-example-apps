@@ -3,6 +3,7 @@ apiVersion: v1
 data:
    DIALPAD_MEETINGS_APP_URL: "https://meetings.dialpadbeta.com"
    NEW_DATA_DEV: "development values"
+   ADD_HERE : "new add here"
 kind: ConfigMap
 metadata:
   name: guestbook-ui
