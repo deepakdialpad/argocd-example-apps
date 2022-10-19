@@ -1,7 +1,7 @@
 ---
 apiVersion: v1
 data:
-   Rollback1: "https://meetings.dialpadbeta.com"
+   Rollback2: "https://meetings.dialpadbeta.com"
 kind: ConfigMap
 metadata:
   name: guestbook-ui
