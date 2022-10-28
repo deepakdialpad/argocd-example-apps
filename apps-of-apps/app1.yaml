@@ -9,6 +9,6 @@ spec:
     server: https://rs-dal-km1-staging.ubervoip.net:6443
   project: default
   source:
-    path: test-application-sets/engineering-dev
+    path: test-application-sets/engineering-dev-1
     repoURL: https://github.com/deepakdialpad/argocd-example-apps.git
     targetRevision: argocd-example-1
