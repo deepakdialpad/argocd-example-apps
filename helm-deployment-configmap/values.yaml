@@ -1,0 +1,5 @@
+releaseName: my-deployment-configmap
+replicaCount: 1
+imageName: nginx:1.14.2
+containerPort: 80
+
