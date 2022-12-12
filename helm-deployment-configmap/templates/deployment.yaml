@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.releaseName }}
+  labels:
+    app: ngnix 
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: ngnix
+  template:
+    metadata:
+      labels:
+        app: ngnix
+    spec:
+      containers:
+      - name: ngnix
+        image: {{ .Values.imageName }}
+        ports:
+        - containerPort: {{ .Values.containerPort }}
+      tolerations:
+      - operator: "Exists"
+
