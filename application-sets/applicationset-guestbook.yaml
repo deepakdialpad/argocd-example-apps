@@ -4,18 +4,19 @@ metadata:
   name: guestbook
 spec:
   generators:
-  - list:
-      elements:
-      - cluster: engineering-dev
-        url: https://rs-dal-km1-staging.ubervoip.net:6443
+  - git:
+      repoURL: https://github.com/deepakdialpad/argocd-example-apps.git
+      revision: HEAD
+      files:
+      - path: "applicationsets-ex-config/*.json"
   template:
     metadata:
-      name: '{{cluster}}-guestbook'
+      name: '{{name}}'
     spec:
       project: default
       source:
         repoURL: https://github.com/deepakdialpad/argocd-example-apps.git
-        targetRevision: argocd-example-1
+        targetRevision: {{targetRevision}}
         path: 'test-application-sets/{{cluster}}'
       destination:
         server: '{{url}}'
