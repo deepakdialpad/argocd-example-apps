@@ -9,7 +9,7 @@ spec:
       repoURL: https://github.com/deepakdialpad/argocd-example-apps.git
       revision: HEAD
       files:
-      - path: "applicationsets-ex-config/config1.json"
+      - path: "applicationsets-ex-config/*.json"
   template:
     metadata:
       name: '{{name}}-guestbook'
