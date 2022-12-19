@@ -2,6 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: guestbook
+  namespace: argocd
 spec:
   generators:
   - git:
@@ -11,13 +12,13 @@ spec:
       - path: "applicationsets-ex-config/config1.json"
   template:
     metadata:
-      name: '{{name}}'
+      name: '{{name}}-guestbook'
     spec:
       project: default
       source:
         repoURL: https://github.com/deepakdialpad/argocd-example-apps.git
-        targetRevision: {{targetRevision}}
-        path: 'test-application-sets/{{cluster}}'
+        targetRevision: argocd-example-1
+        path: "test-application-sets/engineering-dev-1"
       destination:
         server: '{{url}}'
-        namespace: default
+        namespace: guestbook
