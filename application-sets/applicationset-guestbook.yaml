@@ -8,7 +8,7 @@ spec:
       repoURL: https://github.com/deepakdialpad/argocd-example-apps.git
       revision: HEAD
       files:
-      - path: "applicationsets-ex-config/*.json"
+      - path: "applicationsets-ex-config/config1.json"
   template:
     metadata:
       name: '{{name}}'
