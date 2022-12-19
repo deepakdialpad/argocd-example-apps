@@ -1,5 +1,6 @@
 {
     "name": "app1",
-    "targetRevision": "app-dev"
-    
+    "targetRevision": "arogcd-example-1",
+    "url": "https://rs-dal-km1-staging.ubervoip.net:6443",
+    "cluster": "engineering-dev-1"
 }
