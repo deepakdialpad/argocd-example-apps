@@ -20,7 +20,7 @@ spec:
         targetRevision: '{{targetRevision}}'
         path: '{{path}}'
         helm:
-          valuesFile:
+          valueFile:
             - '{{app-config-file}}'
             - ../common_values.yaml
       destination:
