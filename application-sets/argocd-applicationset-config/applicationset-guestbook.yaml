@@ -18,7 +18,7 @@ spec:
       source:
         repoURL: https://github.com/deepakdialpad/argocd-example-apps.git
         targetRevision: '{{targetRevision}}'
-        path: '{{path}}'
+        path: test-application-sets/config2
         helm:
           valueFiles:
             - '{{app-config-file}}'
