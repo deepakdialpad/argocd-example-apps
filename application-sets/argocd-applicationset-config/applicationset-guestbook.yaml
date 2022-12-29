@@ -21,8 +21,8 @@ spec:
         path: '{{path}}'
         helm:
           valuesFile:
-          - '{{app-config-file}}'
-          - ../common_values.yaml
+            - '{{app-config-file}}'
+            - ../common_values.yaml
       destination:
         server: '{{url}}'
         namespace: default
