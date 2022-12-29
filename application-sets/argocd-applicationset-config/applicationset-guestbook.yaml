@@ -7,7 +7,7 @@ spec:
   generators:
   - git:
       repoURL: https://github.com/deepakdialpad/argocd-example-apps.git
-      revision: HEAD
+      revision: argocd-example-1
       files:
       - path: "application-sets/argocd-app-configs/*.json"
   template:
