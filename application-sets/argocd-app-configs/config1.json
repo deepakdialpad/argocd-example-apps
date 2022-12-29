@@ -1,0 +1,7 @@
+{
+    "name": "config1",
+    "targetRevision": "argocd-example-1",
+    "path": "test-application-sets/config1",
+    "url": "https://rs-dal-km1-staging.ubervoip.net:6443",
+    "app-config-file": "config1_values.yaml"
+}

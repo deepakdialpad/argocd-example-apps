@@ -9,16 +9,20 @@ spec:
       repoURL: https://github.com/deepakdialpad/argocd-example-apps.git
       revision: HEAD
       files:
-      - path: "applicationsets-ex-config/*.json"
+      - path: "application-sets/argocd-app-configs/*.json"
   template:
     metadata:
-      name: '{{name}}-guestbook'
+      name: '{{name}}'
     spec:
       project: default
       source:
         repoURL: https://github.com/deepakdialpad/argocd-example-apps.git
-        targetRevision: argocd-example-1
-        path: "test-application-sets/engineering-dev-1"
+        targetRevision: '{{targetRevision}}'
+        path: '{{path}}'
+        helm:
+          valuesFile:
+          - '{{app-config-file}}'
+          - ../common_values.yaml
       destination:
         server: '{{url}}'
-        namespace: guestbook
+        namespace: default
