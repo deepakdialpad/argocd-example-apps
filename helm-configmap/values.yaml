@@ -1,0 +1,4 @@
+replicaCount: 1
+imageName:
+releaseName: sample-app-outside1
+containerPort: 80
