@@ -5,4 +5,5 @@ metadata:
 data:
   # property-like keys; each key maps to a simple value
   player_initial_lives: "6666"
+  non_existing_value: {{ .Values.non_existing_value }}
 
