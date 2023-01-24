@@ -1,4 +1,4 @@
 releaseName: config3-app
 independent_value: 3
-image: fst-20211212
+fstVersion: fst-20221012
 common_value: my_common_value
