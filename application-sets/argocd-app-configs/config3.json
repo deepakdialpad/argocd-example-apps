@@ -1,7 +1,0 @@
-{
-    "name": "config3",
-    "targetRevision": "my-test-tag",
-    "path_location": "test-application-sets/config2",
-    "url": "https://rs-dal-km1-staging.ubervoip.net:6443",
-    "app-config-file": "config2_values.yaml"
-}
