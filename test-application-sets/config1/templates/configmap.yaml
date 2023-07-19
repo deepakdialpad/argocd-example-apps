@@ -7,5 +7,4 @@ data:
   player_initial_lives: "3"
   ui_properties_file_name: "user-interface.properties"
   independent_value: "{{ .Values.independent_value }}"
-  common_value: "{{ .Values.common_value }}"
   implicit_value: "{{ .Values.implicit_value }}"
